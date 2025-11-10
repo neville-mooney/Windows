@@ -42,6 +42,34 @@ function Get-TimestampedLogFile {
 # ==================================================================================================================================================
 $backupJobs = @(
    @{
+      Name         = "ios"
+      Source       = "D:\ios"
+      Destinations = @(
+         @{
+            Path = "C:\OneDrive\My Backups\Librios\ios"
+            Log  = Get-TimestampedLogFile "C:\OneDrive\My Backups\Logs\Librios\ios.log"
+         },
+         @{
+            Path = "F:\My Backups\Librios\ios"
+            Log  = Get-TimestampedLogFile "F:\My Backups\Logs\Librios\ios.log"
+         }
+      )
+   },
+   @{
+      Name         = "Crookshanks Drivers"
+      Source       = "D:\HP Elite Desk 800 G4"
+      Destinations = @(
+         @{
+            Path = "C:\OneDrive\My Backups\HP Elite Desk 800 G4"
+            Log  = Get-TimestampedLogFile "C:\OneDrive\My Backups\Logs\HP Elite Desk 800 G4.log"
+         },
+         @{
+            Path = "F:\My Backups\HP Elite Desk 800 G4"
+            Log  = Get-TimestampedLogFile "F:\My Backups\Logs\HP Elite Desk 800 G4.log"
+         }
+      )
+   },
+   @{
       Name         = "Librios OneDrive"
       Source       = "C:\Users\Neville Mooney.CROOKSHANKS\OneDrive - Librios"
       Destinations = @(
@@ -70,20 +98,6 @@ $backupJobs = @(
       )
    },
    @{
-      Name         = "ios"
-      Source       = "D:\ios"
-      Destinations = @(
-         @{
-            Path = "C:\OneDrive\My Backups\Librios\ios"
-            Log  = Get-TimestampedLogFile "C:\OneDrive\My Backups\Logs\Librios\ios.log"
-         },
-         @{
-            Path = "F:\My Backups\Librios\ios"
-            Log  = Get-TimestampedLogFile "F:\My Backups\Logs\Librios\ios.log"
-         }
-      )
-   },
-   @{
       Name         = "Radio"
       Source       = "D:\Radio"
       Destinations = @(
@@ -101,11 +115,11 @@ $backupJobs = @(
       Name         = "Apple - iTunes"
       Source       = "D:\iTunes"
       Destinations = @(
-         <# I don't do this anymore because the HDD space on C is not enough to be comfortable.
-         @{
-            Path = "C:\OneDrive\My Backups\Apple\iTunes"
-            Log  = Get-TimestampedLogFile "C:\OneDrive\My Backups\Logs\Apple\iTunes.log"
-         },#>
+         # I don't do this anymore because the HDD space on C is not enough to be comfortable.
+         #@{
+         #   Path = "C:\OneDrive\My Backups\Apple\iTunes"
+         #   Log  = Get-TimestampedLogFile "C:\OneDrive\My Backups\Logs\Apple\iTunes.log"
+         #},
          @{
             Path = "F:\My Backups\Apple\iTunes"
             Log  = Get-TimestampedLogFile "F:\My Backups\Logs\Apple\iTunes.log"
@@ -116,33 +130,18 @@ $backupJobs = @(
       Name         = "Apple - MobileSync"
       Source       = "C:\Users\Neville Mooney.CROOKSHANKS\AppData\Roaming\Apple Computer\MobileSync"
       Destinations = @(
-         <# I don't do this anymore because the HDD space on C is not enough to be comfortable.
-         @{
-            Path = "C:\OneDrive\My Backups\Apple\MobileSync"
-            Log  = Get-TimestampedLogFile "C:\OneDrive\My Backups\Logs\Apple\MobileSync.log"
-         },#>
+         ## I don't do this anymore because the HDD space on C is not enough to be comfortable.
+         #@{
+         #   Path = "C:\OneDrive\My Backups\Apple\MobileSync"
+         #   Log  = Get-TimestampedLogFile "C:\OneDrive\My Backups\Logs\Apple\MobileSync.log"
+         #},
          @{
             Path = "F:\My Backups\Apple\MobileSync"
             Log  = Get-TimestampedLogFile "F:\My Backups\Logs\Apple\MobileSync.log"
          }
       )
-   },
-   @{
-      Name         = "Crookshanks Drivers"
-      Source       = "D:\HP Elite Desk 800 G4"
-      Destinations = @(
-         @{
-            Path = "C:\OneDrive\My Backups\HP Elite Desk 800 G4"
-            Log  = Get-TimestampedLogFile "C:\OneDrive\My Backups\Logs\HP Elite Desk 800 G4.log"
-         },#>
-         @{
-            Path = "F:\My Backups\HP Elite Desk 800 G4"
-            Log  = Get-TimestampedLogFile "F:\My Backups\Logs\HP Elite Desk 800 G4.log"
-         }
-      )
-   }   
+   }
 )
-
 
 # ==================================================================================================================================================
 # Perform backups for each source and destination
@@ -155,3 +154,17 @@ foreach ($job in $backupJobs) {
    }
 }
 # ==================================================================================================================================================
+
+
+# Remove log files older than 1 month from all log directories
+$logDirs = $backupJobs | ForEach-Object {
+   $_.Destinations | ForEach-Object {
+      Split-Path $_.Log -Parent
+   }
+} | Select-Object -Unique
+
+foreach ($dir in $logDirs) {
+   Get-ChildItem -Path $dir -Filter *.log -File | Where-Object {
+      $_.LastWriteTime -lt (Get-Date).AddMinutes(-10)
+   } | Remove-Item -Force
+}
