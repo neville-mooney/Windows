@@ -42,40 +42,12 @@ function Get-TimestampedLogFile {
 # ==================================================================================================================================================
 $backupJobs = @(
    @{
-      Name         = "Crookshanks Drivers"
-      Source       = "D:\HP Elite Desk 800 G4"
-      Destinations = @(
-         @{
-            Path = "C:\Users\Neville Mooney.CROOKSHANKS\OneDrive\My Backups\HP Elite Desk 800 G4"
-            Log  = Get-TimestampedLogFile "C:\Users\Neville Mooney.CROOKSHANKS\OneDrive\My Backups\Logs\HP Elite Desk 800 G4.log"
-         },
-         @{
-            Path = "F:\My Backups\HP Elite Desk 800 G4"
-            Log  = Get-TimestampedLogFile "F:\My Backups\Logs\HP Elite Desk 800 G4.log"
-         }
-      )
-   },
-   @{
-      Name         = "Radio"
-      Source       = "D:\Radio"
-      Destinations = @(
-         @{
-            Path = "C:\Users\Neville Mooney.CROOKSHANKS\OneDrive\My Backups\Radio"
-            Log  = Get-TimestampedLogFile "C:\Users\Neville Mooney.CROOKSHANKS\OneDrive\My Backups\Logs\Radio.log"
-         },
-         @{
-            Path = "F:\My Backups\Radio"
-            Log  = Get-TimestampedLogFile "F:\My Backups\Logs\Radio.log"
-         }
-      )
-   },
-   @{
       Name         = "ios"
       Source       = "D:\ios"
       Destinations = @(
          @{
-            Path = "C:\Users\Neville Mooney.CROOKSHANKS\OneDrive\My Backups\Librios\ios"
-            Log  = Get-TimestampedLogFile "C:\Users\Neville Mooney.CROOKSHANKS\OneDrive\My Backups\Logs\Librios\ios.log"
+            Path = "C:\OneDrive\My Backups\Librios\ios"
+            Log  = Get-TimestampedLogFile "C:\OneDrive\My Backups\Logs\Librios\ios.log"
          },
          @{
             Path = "F:\My Backups\Librios\ios"
@@ -84,12 +56,26 @@ $backupJobs = @(
       )
    },
    @{
-      Name         = "Librios OneDrive"
-      Source       = "C:\OneDrive - Librios"
+      Name         = "Crookshanks Drivers"
+      Source       = "D:\HP Elite Desk 800 G4"
       Destinations = @(
          @{
-            Path = "C:\Users\Neville Mooney.CROOKSHANKS\OneDrive\My Backups\Librios\OneDrive"
-            Log  = Get-TimestampedLogFile "C:\Users\Neville Mooney.CROOKSHANKS\OneDrive\My Backups\Logs\Librios\OneDrive.log"
+            Path = "C:\OneDrive\My Backups\HP Elite Desk 800 G4"
+            Log  = Get-TimestampedLogFile "C:\OneDrive\My Backups\Logs\HP Elite Desk 800 G4.log"
+         },
+         @{
+            Path = "F:\My Backups\HP Elite Desk 800 G4"
+            Log  = Get-TimestampedLogFile "F:\My Backups\Logs\HP Elite Desk 800 G4.log"
+         }
+      )
+   },
+   @{
+      Name         = "Librios OneDrive"
+      Source       = "C:\Users\Neville Mooney.CROOKSHANKS\OneDrive - Librios"
+      Destinations = @(
+         @{
+            Path = "C:\OneDrive\My Backups\Librios\OneDrive"
+            Log  = Get-TimestampedLogFile "C:\OneDrive\My Backups\Logs\Librios\OneDrive.log"
          },
          @{
             Path = "F:\My Backups\Librios\OneDrive"
@@ -99,26 +85,40 @@ $backupJobs = @(
    },
    @{
       Name         = "Librios Teams"
-      Source       = "C:\Librios"
+      Source       = "C:\Users\Neville Mooney.CROOKSHANKS\Librios"
       Destinations = @(
          @{
-            Path = "C:\Users\Neville Mooney.CROOKSHANKS\OneDrive\My Backups\Librios\Teams"
-            Log  = Get-TimestampedLogFile "C:\Users\Neville Mooney.CROOKSHANKS\OneDrive\My Backups\Logs\Librios\Teams.log"
+            Path = "C:\OneDrive\My Backups\Librios\Teams"
+            Log  = Get-TimestampedLogFile "C:\OneDrive\My Backups\Logs\Librios\Teams.log"
          },
          @{
             Path = "F:\My Backups\Librios\Teams"
             Log  = Get-TimestampedLogFile "F:\My Backups\Logs\Librios\Teams.log"
          }
       )
-   }<#,
+   },
+   @{
+      Name         = "Radio"
+      Source       = "D:\Radio"
+      Destinations = @(
+         @{
+            Path = "C:\OneDrive\My Backups\Radio"
+            Log  = Get-TimestampedLogFile "C:\OneDrive\My Backups\Logs\Radio.log"
+         },
+         @{
+            Path = "F:\My Backups\Radio"
+            Log  = Get-TimestampedLogFile "F:\My Backups\Logs\Radio.log"
+         }
+      )
+   },
    @{
       Name         = "Apple - iTunes"
       Source       = "D:\iTunes"
       Destinations = @(
          # I don't do this anymore because the HDD space on C is not enough to be comfortable.
          #@{
-         #   Path = "C:\Users\Neville Mooney.CROOKSHANKS\OneDrive\My Backups\Apple\iTunes"
-         #   Log  = Get-TimestampedLogFile "C:\Users\Neville Mooney.CROOKSHANKS\OneDrive\My Backups\Logs\Apple\iTunes.log"
+         #   Path = "C:\OneDrive\My Backups\Apple\iTunes"
+         #   Log  = Get-TimestampedLogFile "C:\OneDrive\My Backups\Logs\Apple\iTunes.log"
          #},
          @{
             Path = "F:\My Backups\Apple\iTunes"
@@ -132,17 +132,16 @@ $backupJobs = @(
       Destinations = @(
          ## I don't do this anymore because the HDD space on C is not enough to be comfortable.
          #@{
-         #   Path = "C:\Users\Neville Mooney.CROOKSHANKS\OneDrive\My Backups\Apple\MobileSync"
-         #   Log  = Get-TimestampedLogFile "C:\Users\Neville Mooney.CROOKSHANKS\OneDrive\My Backups\Logs\Apple\MobileSync.log"
+         #   Path = "C:\OneDrive\My Backups\Apple\MobileSync"
+         #   Log  = Get-TimestampedLogFile "C:\OneDrive\My Backups\Logs\Apple\MobileSync.log"
          #},
          @{
             Path = "F:\My Backups\Apple\MobileSync"
             Log  = Get-TimestampedLogFile "F:\My Backups\Logs\Apple\MobileSync.log"
          }
       )
-   }#>
+   }
 )
-
 
 # ==================================================================================================================================================
 # Perform backups for each source and destination
@@ -166,6 +165,6 @@ $logDirs = $backupJobs | ForEach-Object {
 
 foreach ($dir in $logDirs) {
    Get-ChildItem -Path $dir -Filter *.log -File | Where-Object {
-      $_.LastWriteTime -lt (Get-Date).AddMonths(-1)
+      $_.LastWriteTime -lt (Get-Date).AddMinutes(-10)
    } | Remove-Item -Force
 }

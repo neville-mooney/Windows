@@ -42,34 +42,6 @@ function Get-TimestampedLogFile {
 # ==================================================================================================================================================
 $backupJobs = @(
    @{
-      Name         = "Crookshanks Drivers"
-      Source       = "D:\HP Elite Desk 800 G4"
-      Destinations = @(
-         @{
-            Path = "C:\Users\Neville Mooney.CROOKSHANKS\OneDrive\My Backups\HP Elite Desk 800 G4"
-            Log  = Get-TimestampedLogFile "C:\Users\Neville Mooney.CROOKSHANKS\OneDrive\My Backups\Logs\HP Elite Desk 800 G4.log"
-         },
-         @{
-            Path = "F:\My Backups\HP Elite Desk 800 G4"
-            Log  = Get-TimestampedLogFile "F:\My Backups\Logs\HP Elite Desk 800 G4.log"
-         }
-      )
-   },
-   @{
-      Name         = "Radio"
-      Source       = "D:\Radio"
-      Destinations = @(
-         @{
-            Path = "C:\Users\Neville Mooney.CROOKSHANKS\OneDrive\My Backups\Radio"
-            Log  = Get-TimestampedLogFile "C:\Users\Neville Mooney.CROOKSHANKS\OneDrive\My Backups\Logs\Radio.log"
-         },
-         @{
-            Path = "F:\My Backups\Radio"
-            Log  = Get-TimestampedLogFile "F:\My Backups\Logs\Radio.log"
-         }
-      )
-   },
-   @{
       Name         = "ios"
       Source       = "D:\ios"
       Destinations = @(
@@ -80,6 +52,20 @@ $backupJobs = @(
          @{
             Path = "F:\My Backups\Librios\ios"
             Log  = Get-TimestampedLogFile "F:\My Backups\Logs\Librios\ios.log"
+         }
+      )
+   },
+   @{
+      Name         = "Crookshanks Drivers"
+      Source       = "D:\HP Elite Desk 800 G4"
+      Destinations = @(
+         @{
+            Path = "C:\Users\Neville Mooney.CROOKSHANKS\OneDrive\My Backups\HP Elite Desk 800 G4"
+            Log  = Get-TimestampedLogFile "C:\Users\Neville Mooney.CROOKSHANKS\OneDrive\My Backups\Logs\HP Elite Desk 800 G4.log"
+         },
+         @{
+            Path = "F:\My Backups\HP Elite Desk 800 G4"
+            Log  = Get-TimestampedLogFile "F:\My Backups\Logs\HP Elite Desk 800 G4.log"
          }
       )
    },
@@ -110,7 +96,21 @@ $backupJobs = @(
             Log  = Get-TimestampedLogFile "F:\My Backups\Logs\Librios\Teams.log"
          }
       )
-   }<#,
+   },
+   @{
+      Name         = "Radio"
+      Source       = "D:\Radio"
+      Destinations = @(
+         @{
+            Path = "C:\Users\Neville Mooney.CROOKSHANKS\OneDrive\My Backups\Radio"
+            Log  = Get-TimestampedLogFile "C:\Users\Neville Mooney.CROOKSHANKS\OneDrive\My Backups\Logs\Radio.log"
+         },
+         @{
+            Path = "F:\My Backups\Radio"
+            Log  = Get-TimestampedLogFile "F:\My Backups\Logs\Radio.log"
+         }
+      )
+   },
    @{
       Name         = "Apple - iTunes"
       Source       = "D:\iTunes"
@@ -140,7 +140,7 @@ $backupJobs = @(
             Log  = Get-TimestampedLogFile "F:\My Backups\Logs\Apple\MobileSync.log"
          }
       )
-   }#>
+   }
 )
 
 
@@ -166,6 +166,6 @@ $logDirs = $backupJobs | ForEach-Object {
 
 foreach ($dir in $logDirs) {
    Get-ChildItem -Path $dir -Filter *.log -File | Where-Object {
-      $_.LastWriteTime -lt (Get-Date).AddMonths(-1)
+      $_.LastWriteTime -lt (Get-Date).AddMinutes(-10)
    } | Remove-Item -Force
 }
