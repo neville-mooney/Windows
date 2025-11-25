@@ -42,8 +42,8 @@ function Get-TimestampedLogFile {
 # ==================================================================================================================================================
 $backupJobs = @(
    @{
-      Name         = "Librios OneDrive"
-      Source       = "C:\Users\Neville Mooney.CROOKSHANKS\OneDrive - Librios"
+      Name         = "Crookshanks Drivers"
+      Source       = "D:\HP Elite Desk 800 G4"
       Destinations = @(
          @{
             Path = "C:\Users\Neville Mooney.CROOKSHANKS\OneDrive\My Backups\HP Elite Desk 800 G4"
@@ -110,7 +110,7 @@ $backupJobs = @(
             Log  = Get-TimestampedLogFile "F:\My Backups\Logs\Librios\Teams.log"
          }
       )
-   }<#,
+   },
    @{
       Name         = "Apple - iTunes"
       Source       = "D:\iTunes"
@@ -140,7 +140,7 @@ $backupJobs = @(
             Log  = Get-TimestampedLogFile "F:\My Backups\Logs\Apple\MobileSync.log"
          }
       )
-   }#>
+   }
 )
 
 
