@@ -19,7 +19,7 @@ function Invoke-RobocopyBackup {
    $destParent = Split-Path $Destination -Parent
    New-Item -Path $destParent -ItemType Directory -Force | Out-Null
    
-   # Ensure log directory exists
+   # Ensure log directory exists\
    $logParent = Split-Path $LogFile -Parent
    New-Item -Path $logParent -ItemType Directory -Force | Out-Null
    
