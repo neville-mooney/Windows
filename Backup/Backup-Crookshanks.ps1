@@ -43,15 +43,15 @@ function Get-TimestampedLogFile {
 $backupJobs = @(
    @{
       Name         = "Crookshanks Drivers"
-      Source       = "D:\HP Elite Desk 800 G4"
+      Source       = "D:\Crookshanks Docs and Drivers"
       Destinations = @(
          @{
-            Path = "C:\Users\Neville Mooney.CROOKSHANKS\OneDrive\My Backups\HP Elite Desk 800 G4"
-            Log  = Get-TimestampedLogFile "C:\Users\Neville Mooney.CROOKSHANKS\OneDrive\My Backups\Logs\HP Elite Desk 800 G4.log"
+            Path = "C:\Users\Neville Mooney.CROOKSHANKS\OneDrive\My Backups\Crookshanks Docs and Drivers"
+            Log  = Get-TimestampedLogFile "C:\Users\Neville Mooney.CROOKSHANKS\OneDrive\My Backups\Logs\Crookshanks Docs and Drivers.log"
          },
          @{
-            Path = "F:\My Backups\HP Elite Desk 800 G4"
-            Log  = Get-TimestampedLogFile "F:\My Backups\Logs\HP Elite Desk 800 G4.log"
+            Path = "F:\My Backups\Crookshanks Docs and Drivers"
+            Log  = Get-TimestampedLogFile "F:\My Backups\Logs\Crookshanks Docs and Drivers.log"
          }
       )
    },
