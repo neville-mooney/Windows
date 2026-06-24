@@ -232,7 +232,7 @@ foreach ($job in $backupJobs) {
    foreach ($dest in $job.Destinations) {
       $fileMask = if ([string]::IsNullOrWhiteSpace([string]$job.FileMask)) { "*" } else { $job.FileMask }
       Write-Host "Backing up '$($job.Name)' from '$($job.Source)' to '$($dest.Path)', Mask:'$fileMask', Log:'$($dest.Log)...'"
-      Invoke-RobocopyBackup -Source $job.Source -Destination $dest.Path -LogFile $dest.Log -FileMask $fileMask #| Out-Null
+      Invoke-RobocopyBackup -Source $job.Source -Destination $dest.Path -LogFile $dest.Log -FileMask $fileMask | Out-Null
       Write-Host "Backup completed."
    }
 }
