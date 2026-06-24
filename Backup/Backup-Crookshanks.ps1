@@ -1,3 +1,31 @@
+<#
+   Purpose:
+      Runs one or more backup jobs using robocopy from a central $backupJobs array.
+
+   How it works:
+      - Each job defines Name, Source, optional FileMask, and one or more Destinations.
+      - If FileMask is omitted or blank, "*" is used.
+      - A timestamped log file is written per destination.
+      - Log files older than one month are deleted at the end.
+
+   Version History:
+      v1.0.0  (2025 sometime):
+         - Initial multi-job robocopy backup structure.
+
+      v1.1.0  (2026-06-24):
+         - Added per-job FileMask support and robust default to "*" when not specified.
+
+      v1.2.0  (2026-06-24):
+         - Changed masked backups to use /S (no empty folders) and kept /MIR for full backups.
+
+      v1.3.0  (2026-06-24):
+         - Added masked destination pruning so only mask-matching files and their containing folders remain.
+         - Applied the same masked behavior to files at the destination root.
+         
+#>
+
+
+
 # ==================================================================================================================================================
 # Function to perform robocopy with standardized parameters
 # ==================================================================================================================================================
@@ -8,11 +36,56 @@
 # mIGHT NEED TO GET A SECOND SSD DRIVE TO MAKE THIS MORE PRACTICAL.
 
 
+# ==================================================================================================================================================
+# Keep destination aligned to only files matching the mask (and folders containing them).
+function Sync-MaskedDestination {
+   param(
+      [string]$Source,
+      [string]$Destination,
+      [string]$FileMask
+   )
+
+   if (-not (Test-Path -LiteralPath $Destination)) {
+      return
+   }
+
+   $sourceRoot = [System.IO.Path]::GetFullPath($Source)
+   $destinationRoot = [System.IO.Path]::GetFullPath($Destination)
+
+   $matchedRelativePaths = [System.Collections.Generic.HashSet[string]]::new([System.StringComparer]::OrdinalIgnoreCase)
+   Get-ChildItem -Path $sourceRoot -Recurse -File -Filter $FileMask -ErrorAction SilentlyContinue | ForEach-Object {
+      $relativePath = [System.IO.Path]::GetRelativePath($sourceRoot, $_.FullName)
+      [void]$matchedRelativePaths.Add($relativePath)
+   }
+
+   # Remove destination files that are not present in the source masked set (including root files).
+   Get-ChildItem -Path $destinationRoot -Recurse -File -ErrorAction SilentlyContinue | ForEach-Object {
+      $relativePath = [System.IO.Path]::GetRelativePath($destinationRoot, $_.FullName)
+      if (-not $matchedRelativePaths.Contains($relativePath)) {
+         Remove-Item -LiteralPath $_.FullName -Force -ErrorAction SilentlyContinue
+      }
+   }
+
+   # Remove folders bottom-up so only folders containing matched files remain.
+   Get-ChildItem -Path $destinationRoot -Recurse -Directory -ErrorAction SilentlyContinue |
+      Sort-Object { $_.FullName.Length } -Descending |
+      ForEach-Object {
+         $hasContent = Get-ChildItem -LiteralPath $_.FullName -Force -ErrorAction SilentlyContinue | Select-Object -First 1
+         if (-not $hasContent) {
+            Remove-Item -LiteralPath $_.FullName -Force -ErrorAction SilentlyContinue
+         }
+      }
+}
+
+# ==================================================================================================================================================
+
+
 function Invoke-RobocopyBackup {
    param(
       [string]$Source,
       [string]$Destination,
-      [string]$LogFile
+      [string]$LogFile,
+      [string]$FileMask = "*"
    )
    
    # Ensure destination directory exists
@@ -23,8 +96,15 @@ function Invoke-RobocopyBackup {
    $logParent = Split-Path $LogFile -Parent
    New-Item -Path $logParent -ItemType Directory -Force | Out-Null
    
-   # Perform robocopy
-   robocopy $Source $Destination /z /v /mir /mt /XA:SH /log:$LogFile /tee
+   # For full backups, mirror source and destination.
+   # For masked backups, copy matching files recursively, then prune destination to masked content only.
+   if ($FileMask -eq "*") {
+      robocopy $Source $Destination $FileMask /z /v /mir /mt /XA:SH /log:$LogFile /tee
+   }
+   else {
+      robocopy $Source $Destination $FileMask /z /v /s /mt /XA:SH /log:$LogFile /tee
+      Sync-MaskedDestination -Source $Source -Destination $Destination -FileMask $FileMask
+   }
 }
 function Get-TimestampedLogFile {
    param(
@@ -72,15 +152,16 @@ $backupJobs = @(
    @{
       Name         = "ios"
       Source       = "D:\ios"
+      FileMask     = "*ioscode.zip"
       Destinations = @(
          @{
             Path = "C:\Users\Neville Mooney.CROOKSHANKS\OneDrive\My Backups\Librios\ios"
             Log  = Get-TimestampedLogFile "C:\Users\Neville Mooney.CROOKSHANKS\OneDrive\My Backups\Logs\Librios\ios.log"
-         },
+         }<#,
          @{
             Path = "F:\My Backups\Librios\ios"
             Log  = Get-TimestampedLogFile "F:\My Backups\Logs\Librios\ios.log"
-         }
+         }#>
       )
    },
    @{
@@ -149,8 +230,9 @@ $backupJobs = @(
 # ==================================================================================================================================================
 foreach ($job in $backupJobs) {
    foreach ($dest in $job.Destinations) {
-      Write-Host "Backing up '$($job.Name)' from '$($job.Source)' to '$($dest.Path)', Log:'$($dest.Log)...'"
-      Invoke-RobocopyBackup -Source $job.Source -Destination $dest.Path -LogFile $dest.Log | Out-Null
+      $fileMask = if ([string]::IsNullOrWhiteSpace([string]$job.FileMask)) { "*" } else { $job.FileMask }
+      Write-Host "Backing up '$($job.Name)' from '$($job.Source)' to '$($dest.Path)', Mask:'$fileMask', Log:'$($dest.Log)...'"
+      Invoke-RobocopyBackup -Source $job.Source -Destination $dest.Path -LogFile $dest.Log -FileMask $fileMask #| Out-Null
       Write-Host "Backup completed."
    }
 }
