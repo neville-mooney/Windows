@@ -157,11 +157,11 @@ $backupJobs = @(
          @{
             Path = "C:\Users\Neville Mooney.CROOKSHANKS\OneDrive\My Backups\Librios\ios"
             Log  = Get-TimestampedLogFile "C:\Users\Neville Mooney.CROOKSHANKS\OneDrive\My Backups\Logs\Librios\ios.log"
-         }<#,
+         },
          @{
             Path = "F:\My Backups\Librios\ios"
             Log  = Get-TimestampedLogFile "F:\My Backups\Logs\Librios\ios.log"
-         }#>
+         }
       )
    },
    @{
