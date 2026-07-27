@@ -128,11 +128,11 @@ $backupJobs = @(
          @{
             Path = "C:\Users\Neville Mooney.CROOKSHANKS\OneDrive\My Backups\Crookshanks Docs and Drivers"
             Log  = Get-TimestampedLogFile "C:\Users\Neville Mooney.CROOKSHANKS\OneDrive\My Backups\Logs\Crookshanks Docs and Drivers.log"
-         },
+         }<#,
          @{
             Path = "F:\My Backups\Crookshanks Docs and Drivers"
             Log  = Get-TimestampedLogFile "F:\My Backups\Logs\Crookshanks Docs and Drivers.log"
-         }
+         }#>
       )
    },
    @{
@@ -142,11 +142,11 @@ $backupJobs = @(
          @{
             Path = "C:\Users\Neville Mooney.CROOKSHANKS\OneDrive\My Backups\Radio"
             Log  = Get-TimestampedLogFile "C:\Users\Neville Mooney.CROOKSHANKS\OneDrive\My Backups\Logs\Radio.log"
-         },
+         }<#,
          @{
             Path = "F:\My Backups\Radio"
             Log  = Get-TimestampedLogFile "F:\My Backups\Logs\Radio.log"
-         }
+         }#>
       )
    },
    @{
@@ -157,11 +157,11 @@ $backupJobs = @(
          @{
             Path = "C:\Users\Neville Mooney.CROOKSHANKS\OneDrive\My Backups\Librios\ios"
             Log  = Get-TimestampedLogFile "C:\Users\Neville Mooney.CROOKSHANKS\OneDrive\My Backups\Logs\Librios\ios.log"
-         },
+         }<#,
          @{
             Path = "F:\My Backups\Librios\ios"
             Log  = Get-TimestampedLogFile "F:\My Backups\Logs\Librios\ios.log"
-         }
+         }#>
       )
    },
    @{
@@ -171,11 +171,11 @@ $backupJobs = @(
          @{
             Path = "C:\Users\Neville Mooney.CROOKSHANKS\OneDrive\My Backups\Librios\OneDrive"
             Log  = Get-TimestampedLogFile "C:\Users\Neville Mooney.CROOKSHANKS\OneDrive\My Backups\Logs\Librios\OneDrive.log"
-         },
+         }<#,
          @{
             Path = "F:\My Backups\Librios\OneDrive"
             Log  = Get-TimestampedLogFile "F:\My Backups\Logs\Librios\OneDrive.log"
-         }
+         }#>
       )
    },
    @{
@@ -185,11 +185,11 @@ $backupJobs = @(
          @{
             Path = "C:\Users\Neville Mooney.CROOKSHANKS\OneDrive\My Backups\Librios\Teams"
             Log  = Get-TimestampedLogFile "C:\Users\Neville Mooney.CROOKSHANKS\OneDrive\My Backups\Logs\Librios\Teams.log"
-         },
+         }<#,
          @{
             Path = "F:\My Backups\Librios\Teams"
             Log  = Get-TimestampedLogFile "F:\My Backups\Logs\Librios\Teams.log"
-         }
+         }#>
       )
    },
    @{
@@ -219,6 +219,16 @@ $backupJobs = @(
          @{
             Path = "F:\My Backups\Apple\MobileSync"
             Log  = Get-TimestampedLogFile "F:\My Backups\Logs\Apple\MobileSync.log"
+         }
+      )
+   }
+   @{
+      Name         = "OneDrive"
+      Source       = "C:\Users\Neville Mooney.CROOKSHANKS\OneDrive"
+      Destinations = @(
+         @{
+            Path = "F:\My Backups\OneDrive"
+            Log  = Get-TimestampedLogFile "F:\My Backups\Logs\Librios\OneDrive.log"
          }
       )
    }
