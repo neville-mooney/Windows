@@ -167,7 +167,7 @@ $backupJobs = @(
    },
    @{
       Name         = "Librios OneDrive"
-      Source       = "C:\OneDrive - Librios"
+      Source       = "D:\OneDrive - Librios"
       Destinations = @(
          @{
             Path = "C:\Users\Neville Mooney.CROOKSHANKS\OneDrive\My Backups\Librios\OneDrive"
@@ -181,7 +181,7 @@ $backupJobs = @(
    },
    @{
       Name         = "Librios Teams"
-      Source       = "C:\Librios"
+      Source       = "D:\Librios"
       Destinations = @(
          @{
             Path = "C:\Users\Neville Mooney.CROOKSHANKS\OneDrive\My Backups\Librios\Teams"
